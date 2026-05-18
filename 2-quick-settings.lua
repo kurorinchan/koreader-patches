@@ -159,6 +159,27 @@ local button_defs = {
             end
         end,
     },
+    ssh = {
+        icon = "quick_ssh",
+        label = "SSH",
+        active_func = function()
+            local util = require("util")
+            -- https://github.com/koreader/koreader/blob/659a649732e905445d95937e28f54515c2a0187b/plugins/SSH.koplugin/main.lua#L54
+            -- pid file is created when SSHd (dropbear) is started.
+            return util.pathExists("/tmp/dropbear_koreader.pid")
+        end,
+        callback = function(touch_menu)
+            UIManager:broadcastEvent(Event:new("ToggleSSHServer"))
+            UIManager:scheduleIn(
+                2,
+                function()
+                    if touch_menu.item_table and touch_menu.item_table.panel then
+                        touch_menu:updateItems(1)
+                    end
+                end
+            )
+        end
+    },
     restart = {
         icon = "quick_restart",
         label = "Restart",
