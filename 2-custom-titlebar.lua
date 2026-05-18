@@ -213,18 +213,15 @@ local function getDiskInfo()
     if cached_disk_text and (now - cached_disk_time) < 300 then
         return "\u{F0A0}", " " .. cached_disk_text, colors.disk
     end
-    local pipe = io.popen("df -h /mnt/onboard 2>/dev/null || df -h / 2>/dev/null")
-    if pipe then
-        local _ = pipe:read("*line") -- skip header
-        local line = pipe:read("*line")
-        pipe:close()
-        if line then
-            local avail = line:match("%S+%s+%S+%s+%S+%s+(%S+)")
-            if avail then
-                cached_disk_text = avail
-                cached_disk_time = now
-                return "\u{F0A0}", " " .. avail, colors.disk
-            end
+    local util = require("util")
+    if util.diskUsage then
+        local drive = Device.home_dir or "/"
+        local ok, usage = pcall(util.diskUsage, drive)
+        if ok and usage and type(usage.available) == "number" and usage.available > 0 then
+            local avail = string.format("%.1fGB", usage.available / 1024 / 1024 / 1024)
+            cached_disk_text = avail
+            cached_disk_time = now
+            return "\u{F0A0}", " " .. avail, colors.disk
         end
     end
     return "\u{F0A0}", " ?", colors.disk
