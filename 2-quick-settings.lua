@@ -35,12 +35,30 @@ local Screen = Device.screen
 -- ============================================================
 
 local config_default = {
-    button_order = { "wifi", "night", "rotate", "usb", "search", "quickrss", "cloud", "zlibrary", "calibre", "notion", "streak", "opds", "restart", "exit", "sleep" },
+    button_order = { 
+        "wifi",
+        "night",
+        "rotate",
+        "usb",
+        "ssh",
+        "search",
+        "quickrss",
+        "cloud",
+        "zlibrary",
+        "calibre",
+        "notion",
+        "streak",
+        "opds",
+        "restart",
+        "exit",
+        "sleep"
+    },
     show_buttons = {
         wifi = true,
         night = true,
         rotate = true,
-        usb = true,
+        usb = false,
+        ssh = true,
         search = false,
         quickrss = false,
         cloud = false,
@@ -308,6 +326,7 @@ local button_display_names = {
     night = _("Night mode"),
     rotate = _("Rotate"),
     usb = _("USB"),
+    ssh = _("SSH"),
     restart = _("Restart"),
     exit = _("Exit"),
     sleep = _("Sleep"),
