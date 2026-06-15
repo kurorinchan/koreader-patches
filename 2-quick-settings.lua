@@ -7,6 +7,23 @@
 -- NotionSync plugin by Cezary Pukownik: https://github.com/CezaryPukownik/notionsync.koplugin
 -- Reading Streak plugin by advokatb: https://github.com/advokatb/readingstreak.koplugin
 
+-- ============================================================
+-- TIPS
+-- ============================================================
+
+-- When trying to add a feature, see whether an event is already defined in the koreader
+-- code base in frontend/dispatcher.lua.
+-- If found, then search for that string in the whole repository. Hopefully there is an event
+-- handler named like onXXX, e.g. onSetLockGSensor.
+-- It should give you an idea on how to define the active_func and callback functions.
+
+-- active_func is the function used to check whether it is ON / OFF.
+-- callback is for toggling the functionality (if it is a toggle).
+-- It does not have to be a toggle e.g. Sleep, Restart, Exit, etc.
+
+-- Put the new functionality in button_order, show_buttons, button_defs, and button_display_names.
+-- Make sure to add an icon for it.
+
 local Blitbuffer = require("ffi/blitbuffer")
 local CenterContainer = require("ui/widget/container/centercontainer")
 local Device = require("device")
