@@ -190,10 +190,9 @@ local button_defs = {
     lockorientation = {
         icon = "lock_orientation",
         label = "Lock Orientation",
-        active_func = function() return G_reader_settings:isTrue("input_lock_gsensor") end,
+        active_func = function() return G_reader_settings:isTrue("input_ignore_gsensor") end,
         callback = function(touch_menu)
-            local is_locked = G_reader_settings:isTrue("input_lock_gsensor")
-            UIManager:broadcastEvent(Event:new("SetLockGSensor", not is_locked))
+            UIManager:broadcastEvent(Event:new("ToggleGSensor"))
             --- Boilerplate code to update the UI after toggling settings.
             UIManager:scheduleIn(
                 1,
