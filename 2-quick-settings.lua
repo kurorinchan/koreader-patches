@@ -39,6 +39,7 @@ local config_default = {
         "wifi",
         "night",
         "rotate",
+        "lockorientation",
         "usb",
         "ssh",
         "search",
@@ -57,6 +58,7 @@ local config_default = {
         wifi = true,
         night = true,
         rotate = true,
+        lockorientation = false,
         usb = false,
         ssh = true,
         search = false,
@@ -166,6 +168,24 @@ local button_defs = {
         label = "Rotate",
         callback = function()
             UIManager:broadcastEvent(Event:new("SwapRotation"))
+        end,
+    },
+    lockorientation = {
+        icon = "lock_orientation",
+        label = "Lock Orientation",
+        active_func = function() return G_reader_settings:isTrue("input_lock_gsensor") end,
+        callback = function(touch_menu)
+            local is_locked = G_reader_settings:isTrue("input_lock_gsensor")
+            UIManager:broadcastEvent(Event:new("SetLockGSensor", not is_locked))
+            --- Boilerplate code to update the UI after toggling settings.
+            UIManager:scheduleIn(
+                1,
+                function()
+                    if touch_menu.item_table and touch_menu.item_table.panel then
+                        touch_menu:updateItems(1)
+                    end
+                end
+            )
         end,
     },
     usb = {
@@ -325,6 +345,7 @@ local button_display_names = {
     wifi = _("Wi-Fi"),
     night = _("Night mode"),
     rotate = _("Rotate"),
+    lockorientation = _("Lock Orientation"),
     usb = _("USB"),
     ssh = _("SSH"),
     restart = _("Restart"),
